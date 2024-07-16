@@ -1,0 +1,11 @@
+<FindBugsFilter>
+    <Match>
+        <Bug pattern="NP_UNWRITTEN_FIELD" />
+    </Match>
+
+    <!--
+    <Match>
+        <Rank value="10" />
+    </Match>
+     -->
+</FindBugsFilter>

@@ -1,0 +1,75 @@
+springdoc:
+    api-docs:
+        enabled: true
+    swagger-ui:
+        enabled: true
+spring:
+  config.import: service.yml
+  data.redis.repositories.enabled: false
+  jackson.default-leniency: false
+  datasource:
+    hikari:
+      validationTimeout: 3000 # 3s, maximum number of milliseconds that the pool will wait for a connection to be validated as alive
+      connectionTimeout: 30000 # 30s, maximum number of milliseconds that a client will wait for a connection from the pool
+      idleTimeout: 600000 # 10m, maximum amount of time (in milliseconds) that a connection is allowed to sit idle in the pool
+      keepaliveTime: 30000 # 30s, keepalive interval for a connection in the pool
+      maxLifetime: 1800000 # 30m, maximum lifetime of a connection in the pool
+      maximum-pool-size: 10 # the maximum number of connections that HikariCP will keep in the pool
+      minimumIdle: 10 #  minimum number of idle connections that HikariCP tries to maintain in the pool
+  jpa:
+    open-in-view: false
+    properties:
+      hibernate:
+        jdbc:
+          batch_size: 16
+          batch_versioned_data: true
+          use_get_generated_keys: true
+        default_batch_fetch_size: 16
+        order_inserts: true
+        id.new_generator_mappings: true
+server:
+  port: 8080
+management:
+  endpoints:
+    enabled-by-default: false
+    web:
+      exposure:
+        include:
+        - health
+        - prometheus
+  endpoint:
+    prometheus:
+      enabled: true
+    health:
+      enabled: true
+  metrics:
+    export:
+      prometheus:
+        enabled: true
+  server:
+    port: 8090
+com.kkday.sdk:
+  devMode: false
+  serverEnv: dev
+  serverKey: online
+  serverGroup: null
+  kibanaUrl: https://kibana.sit.kkday.com
+  trace:
+    url: http://127.0.0.1:16686/trace/
+    host: 127.0.0.1
+    port: 6831
+  mq:
+    enable: true
+    url:
+      producer: amqp://guest:guest@localhost:5672/%2f
+      consumer: amqp://guest:guest@localhost:5672/%2f
+    prefix:
+      exchange: ex-
+    queue:
+      consumer: q-kklib
+  jpa:
+    enable: true ## 開關 JPA 支援.
+  redis:
+    enable: true ## 開關 REDIS 支援.
+    config:
+      enable: true ## 開關 REDIS 支援.

@@ -1,0 +1,25 @@
+spring:
+  datasource:
+    driver-class-name: org.h2.Driver
+    url: jdbc:h2:mem:db;DB_CLOSE_DELAY=-1;MODE=PostgreSQL;DATABASE_TO_LOWER=TRUE;DEFAULT_NULL_ORDERING=HIGH
+    username: sa
+  jpa.properties.hibernate.dialect: org.hibernate.dialect.PostgreSQLDialect
+  jpa.properties.hibernate.temp.use_jdbc_metadata_defaults: false
+  jpa.hibernate.ddl-auto: create-drop
+com.kkday.sdk:
+  jpa:
+    enable: true
+  redis:
+    enable: true
+    ip: 127.0.0.1
+    port: 6379
+    config:
+      enable: true
+      ip: 127.0.0.1
+      port: 6379
+  mq:
+    enable: true
+  audit:
+    slack:
+      channel : null
+      srvUrl : null

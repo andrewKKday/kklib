@@ -1,0 +1,133 @@
+<configuration>
+	<appender name="STDOUT"
+		class="ch.qos.logback.core.ConsoleAppender">
+		<encoder>
+			<pattern>%date %level [%thread] [%X{request-uuid}] %logger{10} [%file:%line] %msg%n</pattern>
+		</encoder>
+		<filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+			<level>ERROR</level>
+		</filter>
+	</appender>
+
+	<appender name="apiLog"
+		class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<file>${user.home}/logs/kkday-api/java_kklib_test.log</file>
+		<encoder
+			class="ch.qos.logback.core.encoder.LayoutWrappingEncoder">
+			<layout class="com.kkday.sdk.impl.log.DebugJsonLayout" />
+		</encoder>
+		<rollingPolicy
+			class="ch.qos.logback.core.rolling.FixedWindowRollingPolicy">
+			<fileNamePattern>${user.home}/logs/kkday-api/java_kklib_test.log.%i
+			</fileNamePattern>
+			<minIndex>1</minIndex>
+			<maxIndex>20</maxIndex>
+		</rollingPolicy>
+		<triggeringPolicy
+			class="ch.qos.logback.core.rolling.SizeBasedTriggeringPolicy">
+			<maxFileSize>10MB</maxFileSize>
+		</triggeringPolicy>
+	</appender>
+
+	<appender name="apiCallLog"
+		class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<file>${user.home}/logs/kkday-api/java_kklib_test_call.log</file>
+		<encoder>
+			<pattern>%msg%n</pattern>
+		</encoder>
+		<rollingPolicy
+			class="ch.qos.logback.core.rolling.FixedWindowRollingPolicy">
+			<fileNamePattern>${user.home}/logs/kkday-api/java_kklib_test_call.log.%i
+			</fileNamePattern>
+			<minIndex>1</minIndex>
+			<maxIndex>20</maxIndex>
+		</rollingPolicy>
+		<triggeringPolicy
+			class="ch.qos.logback.core.rolling.SizeBasedTriggeringPolicy">
+			<maxFileSize>10MB</maxFileSize>
+		</triggeringPolicy>
+	</appender>
+
+	<appender name="apiCallLog.req"
+		class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<file>${user.home}/logs/kkday-api/java_kklib_test_call_req.log</file>
+		<encoder>
+			<pattern>%msg%n</pattern>
+		</encoder>
+		<rollingPolicy
+			class="ch.qos.logback.core.rolling.FixedWindowRollingPolicy">
+			<fileNamePattern>${user.home}/logs/kkday-api/java_kklib_test_call_req.log.%i
+			</fileNamePattern>
+			<minIndex>1</minIndex>
+			<maxIndex>20</maxIndex>
+		</rollingPolicy>
+		<triggeringPolicy
+			class="ch.qos.logback.core.rolling.SizeBasedTriggeringPolicy">
+			<maxFileSize>10MB</maxFileSize>
+		</triggeringPolicy>
+	</appender>
+
+	<appender name="apiCallLog.resp"
+		class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<file>${user.home}/logs/kkday-api/java_kklib_test_call_resp.log</file>
+		<encoder>
+			<pattern>%msg%n</pattern>
+		</encoder>
+		<rollingPolicy
+			class="ch.qos.logback.core.rolling.FixedWindowRollingPolicy">
+			<fileNamePattern>${user.home}/logs/kkday-api/java_kklib_test_call_resp.log.%i
+			</fileNamePattern>
+			<minIndex>1</minIndex>
+			<maxIndex>20</maxIndex>
+		</rollingPolicy>
+		<triggeringPolicy
+			class="ch.qos.logback.core.rolling.SizeBasedTriggeringPolicy">
+			<maxFileSize>10MB</maxFileSize>
+		</triggeringPolicy>
+	</appender>
+
+	<appender name="apiOutboundCallLog"
+		class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<file>${user.home}/logs/kkday-api/java_kklib_test_outbound_call.log
+		</file>
+		<encoder>
+			<pattern>%msg%n</pattern>
+		</encoder>
+		<rollingPolicy
+			class="ch.qos.logback.core.rolling.FixedWindowRollingPolicy">
+			<fileNamePattern>${user.home}/logs/kkday-api/java_kklib_test_outbound_call.log.%i
+			</fileNamePattern>
+			<minIndex>1</minIndex>
+			<maxIndex>20</maxIndex>
+		</rollingPolicy>
+		<triggeringPolicy
+			class="ch.qos.logback.core.rolling.SizeBasedTriggeringPolicy">
+			<maxFileSize>10MB</maxFileSize>
+		</triggeringPolicy>
+	</appender>
+
+	<logger name="com.kkday" level="debug">
+	</logger>
+
+	<logger name="apiCall" level="info" additivity="false">
+		<appender-ref ref="apiCallLog" />
+	</logger>
+
+	<logger name="apiCall.req" level="info" additivity="false">
+		<appender-ref ref="apiCallLog.req" />
+	</logger>
+
+	<logger name="apiCall.resp" level="info" additivity="false">
+		<appender-ref ref="apiCallLog.resp" />
+	</logger>
+
+	<logger name="apiOutboundCallLog" level="info"
+		additivity="false">
+		<appender-ref ref="apiOutboundCallLog" />
+	</logger>
+
+	<root level="WARN">
+		<appender-ref ref="apiLog" />
+		<appender-ref ref="STDOUT" />
+	</root>
+</configuration>

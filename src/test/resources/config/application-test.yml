@@ -1,0 +1,23 @@
+server.port: 8080
+management.server.port: 8090
+com.kkday.sdk:
+  devMode: true
+  serverEnv: dev
+  kibanaUrl: "http://localhost:5601/app/kibana#/discover"
+  mq:
+    enable: true
+    url:
+      producer: amqp://guest:guest@localhost:5672/%2f
+      consumer: amqp://guest:guest@localhost:5672/%2f
+    prefix:
+      exchange: ex-
+    queue:
+      consumer: q-kklib
+  trace:
+    url: http://127.0.0.1:16686/trace/
+    host: 127.0.0.1
+    port: 6831
+  redis:
+    enable: true
+    ip: 127.0.0.1
+    port: 6379

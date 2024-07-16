@@ -1,0 +1,10 @@
+spring.application.name: kklib
+com.kkday.sdk:
+  jpa:
+    enable: true ## 開關 JPA 支援.
+  redis:
+    enable: true ## 開關 REDIS 支援.
+    config:
+      enable: true ## 開關 REDIS 支援.
+  mq:
+    enable: true ## 開關 MQ 支援.

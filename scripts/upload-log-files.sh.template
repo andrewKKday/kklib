@@ -1,0 +1,79 @@
+#!/bin/bash
+
+# Setting global variables
+DATETIME_FORMAT=$(date +"%Y%m%d-%H%M%S")
+NEXUS_DOMAIN="{{ KK_SERVICE.NEXUS.DOMAIN }}"
+NEXUS_USERNAME="{{ KK_SERVICE.NEXUS.CUSTOM_VARS.ACCOUNT.ORDER_TEAM_USER }}"
+NEXUS_PASSWORD="{{ KK_SERVICE.NEXUS.CUSTOM_VARS.ACCOUNT.ORDER_TEAM_PASS }}"
+NEXUS_REPOSITORY="{{ KK_SERVICE.NEXUS.CUSTOM_VARS.REPOSITORY.ORDER_TEAM_REPO }}"
+JAVA_LOG_PATH="{{ KK_SERVICE.KKLIB.CUSTOM_VARS.KKDAY.EXTRA_LOG_PATH }}"
+SERVICE_NAME="{{ KK_SERVICE.KKLIB.PREFIX }}"
+ORIGIN_DOMAIN="{{ KK_SERVICE.KKLIB.DOMAIN }}"
+HOSTNAME=$(hostname)
+COMPRESSED_FILE_NAME="java_${SERVICE_NAME}_logs-${DATETIME_FORMAT}-${HOSTNAME}.zip"
+SLEEP_RANDOM_INT=$((RANDOM % 60 + 5))
+STATUS_CODE=""
+
+function archiveAllLogFiles() {
+    local archive_filename=$1
+    zip -q -r "$archive_filename" . || exit
+}
+
+function uploadLogArchiveFiles() {
+    local upload_file=$1
+
+    echo "Will sleep $SLEEP_RANDOM_INT seconds."
+    sleep $SLEEP_RANDOM_INT
+    response=$(curl --write-out '%{http_code}'\\n --silent -X "POST" "https://${NEXUS_DOMAIN}/service/rest/v1/components?repository=${NEXUS_REPOSITORY}" \
+        -H "accept: application/json" \
+        -H "Content-Type: multipart/form-data" \
+        -H "Authorization: Basic $(echo -n "$NEXUS_USERNAME":"$NEXUS_PASSWORD" | base64)" \
+        -F "raw.directory=${SERVICE_NAME}/${ORIGIN_DOMAIN}" \
+        -F "raw.asset1=@${upload_file};type=application/x-zip-compressed" \
+        -F "raw.asset1.filename=${upload_file}")
+
+    eval STATUS_CODE="$response"
+}
+
+function main() {
+    cd "$JAVA_LOG_PATH" || exit
+
+    # If folder not empty, then archive all log files.
+    if [ "$(ls -A .)" ]; then
+        archiveAllLogFiles "$COMPRESSED_FILE_NAME"
+        echo "All log files archived."
+    else
+        echo "Directory $(pwd) is empty."
+        exit
+    fi
+
+    # If archive file exist, then upload to nexus3 and remove archive file.
+    if [ -f "$COMPRESSED_FILE_NAME" ]; then
+
+        uploadLogArchiveFiles "$COMPRESSED_FILE_NAME"
+
+        # if function uploadLogArchiveFiles reture status code is 204, then upload zip file and delete.
+        # Or echo error status code.
+        if [ "$STATUS_CODE" == "204" ]; then
+            echo "File $COMPRESSED_FILE_NAME uploaded"
+            rm "$COMPRESSED_FILE_NAME"
+            echo "File $COMPRESSED_FILE_NAME deleted."
+        else
+            echo "Connection refuse, status code: ${STATUS_CODE}"
+            exit
+        fi
+    else
+        echo "File $COMPRESSED_FILE_NAME doesn't exist."
+        exit
+    fi
+
+    # Looking for heap dump file, and delete it when exist.
+    for file in "${JAVA_LOG_PATH}"*.hprof; do
+        if [ -e "$file" ]; then
+            rm "$file"
+            echo "Heap dump: ${file} deleted."
+        fi
+    done
+}
+
+main

@@ -1,0 +1,9 @@
+pluginManagement {
+    repositories {
+        maven {
+            url "http://nexus.sit.kkday.com/nexus/content/groups/public/"
+            allowInsecureProtocol = true
+        }
+    }
+}
+rootProject.name = 'kklib'

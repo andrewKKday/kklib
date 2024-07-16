@@ -1,0 +1,14 @@
+{
+  "name": "kklib-thread-dump",
+  "schedule": "@manually",
+  "timezone": "Asia/Taipei",
+  "disabled": false,
+  "tags": {
+    "service": "kklib"
+  },
+  "concurrency": "forbid",
+  "executor": "shell",
+  "executor_config": {
+    "command": "bash /data/web-project/application/threaddump.sh"
+  }
+}

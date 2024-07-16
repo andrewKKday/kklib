@@ -1,0 +1,20 @@
+[Unit]
+Description=KKDAY kklib
+After=syslog.target network.target
+
+[Service]
+WorkingDirectory=/data/web-project/application
+StandardOutput=syslog
+StandardError=syslog
+SyslogIdentifier=kklib
+Type=forking
+PIDFile=/tmp/kklib.pid
+User=www-data
+Group=www-data
+Restart=always
+RestartSec=5
+ExecStart=/data/web-project/application/startup.sh
+KillSignal=SIGTERM
+
+[Install]
+WantedBy=multi-user.target

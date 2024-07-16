@@ -1,0 +1,12 @@
+<FindBugsFilter>
+    <Match>
+        <Bug
+            category="CORRECTNESS, MT_CORRECTNESS, BAD_PRACTICICE, PERFORMANCE, STYLE" />
+        <Confidence value="2" />
+        <!-- Rank 無法正常使用於 include filter (必須搭配 <Not>), 或使用於 exclude -->
+        <!-- https://github.com/spotbugs/spotbugs/issues/929 -->
+        <Not>
+            <Rank value="10" />
+        </Not>
+    </Match>
+</FindBugsFilter>

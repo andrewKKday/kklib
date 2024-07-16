@@ -1,0 +1,16 @@
+springdoc:
+    api-docs:
+        enabled: {{ KK_SERVICE.KKLIB.CUSTOM_VARS.KKDAY.ENABLE_SWAGGER|default('true')}}
+    swagger-ui: 
+        enabled: {{ KK_SERVICE.KKLIB.CUSTOM_VARS.KKDAY.ENABLE_SWAGGER|default('true')}}
+spring.datasource:
+  url: "jdbc:postgresql://{{ DB_HOST }}:5432/ {{ DB_NAME }}"
+  username: "{{ DB_USER }}"
+  password: "{{ DB_PASSWORD }}"
+com.kkday.sdk:
+  redis:
+    ip: {{ REDIS_HOST }}
+    port: {{ REDIS_PORT }}
+    config:
+        ip: {{ REDIS_ENV.CACHE_DATA.DOMAIN }}
+        port: {{ REDIS_ENV.CACHE_DATA.PORT }}

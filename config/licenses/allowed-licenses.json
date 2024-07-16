@@ -1,0 +1,123 @@
+{
+    "allowedLicenses": [
+        {
+            "moduleLicense": ".*Apache.*",
+            "moduleName": ".*"
+        },
+        {
+            "moduleLicense": ".*MIT.*",
+            "moduleName": ".*"
+        },
+        {
+            "moduleLicense": "Mozilla Public License",
+            "moduleName": ".*"
+        },
+        {
+            "moduleLicense": "MPL .*",
+            "moduleName": ".*"
+        },
+        {
+            "moduleLicense": ".*BSD.*",
+            "moduleName": ".*"
+        },
+        {
+            "moduleLicense": ".*Eclipse.*",
+            "moduleName": ".*"
+        },
+        {
+            "moduleLicense": ".*CDDL.*",
+            "moduleName": ".*"
+        },
+        {
+            "moduleLicense": "PayPal SDK License",
+            "moduleName": ".*"
+        },
+        {
+            "moduleLicense": "Bouncy Castle License",
+            "moduleName": ".*"
+        },
+        {
+            "moduleName": ".*hibernate.*"
+        },
+        {
+            "moduleName": "com.hyweb:posapi_citi"
+        },
+        {
+            "moduleName": "dom4j:dom4j"
+        },
+        {
+            "moduleName": "javax.servlet:jsp-api",
+            "moduleVersion": "2.0"
+        },
+        {
+            "moduleVersion": "2.4",
+            "moduleName": "javax.servlet:servlet-api"
+        },
+        {
+            "moduleVersion": "1.0",
+            "moduleName": "javax.websocket:javax.websocket-api"
+        },
+        {
+            "moduleVersion": "1.3.3",
+            "moduleName": "net.lingala.zip4j:zip4j"
+        },
+        {
+            "moduleVersion": "2.7.3",
+            "moduleName": "ognl:ognl"
+        },
+        {
+            "moduleVersion": "1.8",
+            "moduleName": "org.jvnet.staxex:stax-ex"
+        },
+        {
+            "moduleVersion": "2.0.11",
+            "moduleName": "org.mvel:mvel2"
+        },
+        {
+            "moduleVersion": "1.0.0",
+            "moduleName": "javax.cache:cache-api"
+        },
+        {
+            "moduleVersion": "1.0.3",
+            "moduleName": "org.reactivestreams:reactive-streams"
+        },
+        {
+            "moduleLicense": "GNU LESSER GENERAL PUBLIC LICENSE.*",
+            "moduleName": ".*"
+        },
+        {
+            "moduleLicense": "Bouncy Castle Licence",
+            "moduleName": "org.bouncycastle:bcprov-jdk15on"
+        },
+        {
+            "moduleName": "com.fasterxml.jackson:jackson-bom"
+        },
+        {
+            "moduleLicense": "Bouncy Castle Licence",
+            "moduleVersion": "1.64",
+            "moduleName": "org.bouncycastle:bcpkix-jdk15on"
+        },
+        {
+            "moduleLicense": "Public Domain, per Creative Commons CC0",
+            "moduleVersion": "2.0.3",
+            "moduleName": "org.latencyutils:LatencyUtils"
+        },
+        {
+            "moduleLicense": null,
+            "moduleVersion": "2.3.1.RELEASE",
+            "moduleName": "org.springframework.boot:spring-boot-dependencies"
+        },
+        {
+            "moduleName": "com.kkday:sdk"
+        },
+        {
+            "moduleName": "com.squareup.okio:okio"
+        },
+        {
+            "moduleName": "org.jetbrains.kotlin:kotlin-stdlib-common"
+        },
+        {
+            "moduleLicense": "Public Domain"
+        }
+    ]
+}

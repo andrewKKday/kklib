@@ -1,0 +1,64 @@
+<?xml version="1.0"?>
+
+<ruleset name="KKDAY API Custom Rule sets"
+    xmlns="http://pmd.sourceforge.net/ruleset/2.0.0"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://pmd.sourceforge.net/ruleset/2.0.0 https://pmd.sourceforge.io/ruleset_2_0_0.xsd">
+
+    <description>
+        KKDAY API Custom Rule sets
+    </description>
+
+  <rule ref="category/java/bestpractices.xml/GuardLogStatement">
+      <properties>
+          <property name="logLevels" value="trace,debug" />
+          <property name="guardsMethods" value="isTraceEnabled,isDebugEnabled" />
+      </properties>
+  </rule>
+    <rule ref="category/java/bestpractices.xml/SystemPrintln" />
+
+    <rule ref="category/java/codestyle.xml/AvoidUsingNativeCode" />
+
+    <rule ref="category/java/design.xml/AvoidThrowingNullPointerException" />
+
+    <rule ref="category/java/errorprone.xml/EqualsNull" />
+    <rule ref="category/java/errorprone.xml/AvoidAssertAsIdentifier" />
+    <rule ref="category/java/errorprone.xml/AvoidBranchingStatementAsLastInLoop" />
+    <rule ref="category/java/errorprone.xml/AvoidEnumAsIdentifier" />
+    <rule ref="category/java/errorprone.xml/AvoidLosingExceptionInformation" />
+    <rule ref="category/java/errorprone.xml/BrokenNullCheck" />
+    <rule ref="category/java/errorprone.xml/DoNotCallGarbageCollectionExplicitly" />
+    <rule ref="category/java/errorprone.xml/ProperCloneImplementation" />
+    <rule ref="category/java/errorprone.xml/SingleMethodSingleton" />
+    <rule ref="category/java/errorprone.xml/SingletonClassReturningNewInstance" />
+    <rule ref="category/java/errorprone.xml/SuspiciousEqualsMethodName" />
+
+    <rule ref="category/java/multithreading.xml/DoubleCheckedLocking" />
+    <rule ref="category/java/multithreading.xml/AvoidUsingVolatile" />
+
+    <rule ref="category/java/performance.xml/AvoidFileStream" />
+    <rule ref="category/java/performance.xml/StringInstantiation" />
+
+    <exclude-pattern>.*/.*/.*Test</exclude-pattern>
+
+    <!--
+
+    <rule ref="category/java/bestpractices.xml/AvoidReassigningParameters" />
+
+    <rule ref="category/java/codestyle.xml/EmptyMethodInAbstractClassShouldBeAbstract" />
+    <rule ref="category/java/codestyle.xml/FormalParameterNamingConventions" />
+    <rule ref="category/java/codestyle.xml/MethodNamingConventions" />
+    <rule ref="category/java/codestyle.xml/FieldNamingConventions" />
+    <rule ref="category/java/codestyle.xml/ClassNamingConventions" />
+    <rule ref="category/java/codestyle.xml/VariableNamingConventions" />
+    <rule ref="category/java/codestyle.xml/LocalVariableNamingConventions" />
+
+    <rule ref="category/java/design.xml/AbstractClassWithoutAnyMethod" />
+    <rule ref="category/java/design.xml/AvoidThrowingRawExceptionTypes" />
+    <rule ref="category/java/design.xml/ClassWithOnlyPrivateConstructorsShouldBeFinal" />
+
+    <rule ref="category/java/errorprone.xml/ConstructorCallsOverridableMethod" />
+    <rule ref="category/java/errorprone.xml/MoreThanOneLogger" />
+
+    -->
+</ruleset>

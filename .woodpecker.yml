@@ -1,0 +1,117 @@
+pipeline:
+  compile:
+    image: gradle:jdk21
+    commands:
+    - export GRADLE_USER_HOME=$PWD
+    - ./gradlew --no-daemon -Dorg.gradle.jvmargs=-Xmx1536m clean compileJava
+    when:
+      event:
+      - pull_request
+      
+  compileTest:
+    image: gradle:jdk21
+    commands:
+    - export GRADLE_USER_HOME=$PWD
+    - ./gradlew --no-daemon -Dorg.gradle.jvmargs=-Xmx1536m compileTestJava
+    when:
+      event:
+      - pull_request
+      
+  test:
+    image: gradle:jdk21
+    commands:
+    - export GRADLE_USER_HOME=$PWD
+    - ./gradlew --no-daemon -Dorg.gradle.jvmargs=-Xmx1536m --stacktrace test
+    when:
+      event:
+      - pull_request
+      
+  spotbugs:
+    image: gradle:jdk21 
+    commands:
+    - export GRADLE_USER_HOME=$PWD
+    - ./gradlew --no-daemon -Dorg.gradle.jvmargs=-Xmx1536m spotbugsMain
+    when:
+      event:
+      - pull_request
+      
+  pmd:
+    image: gradle:jdk21
+    commands:
+    - export GRADLE_USER_HOME=$PWD
+    - ./gradlew --no-daemon -Dorg.gradle.jvmargs=-Xmx1536m pmdMain
+    when:
+      event:
+      - pull_request
+      
+  checkLicense:
+    image: gradle:jdk21
+    commands:
+    - export GRADLE_USER_HOME=$PWD
+    - ./gradlew --no-daemon -Dorg.gradle.jvmargs=-Xmx1536m checkLicense
+    when:
+      event:
+      - pull_request
+
+  kklib-rc-release-log:
+    image: kkday/github-release-helper:latest
+    pull: true
+    github_owner: ${DRONE_REPO_OWNER}
+    github_repo: ${DRONE_REPO_NAME}
+    match_tag: "kklib_v*"
+    exclude_tag: "*rc*"
+    commit_mode: merges
+    filter_mode: pick
+    secrets:
+      - source: github_ssh_deploy_key
+        target: sshkey
+      - source: github_oauth_token
+        target: github_token
+    when:
+      ref:
+        - refs/tags/kklib_v*rc*
+
+  kklib-prod-release-log:
+    image: kkday/github-release-helper:latest
+    pull: true
+    github_owner: ${DRONE_REPO_OWNER}
+    github_repo: ${DRONE_REPO_NAME}
+    match_tag: "kklib_v*"
+    exclude_tag: "*rc*"
+    commit_mode: merges
+    filter_mode: pick
+    secrets:
+      - source: github_ssh_deploy_key
+        target: sshkey
+      - source: github_oauth_token
+        target: github_token
+    when:
+      ref:
+        include: refs/tags/kklib_v*
+        exclude: refs/tags/*rc*
+      
+  notify:
+    image: plugins/slack:1
+    webhook: https://hooks.slack.com/services/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
+    channel: order-api-ci
+    link_names: true
+    template: >
+      {{#success build.status}}
+        [PR] {{repo.name}}/#{{build.number}} succeeded. {{build.author}} {{build.event}} to {{build.branch}}.
+        CI: {{build.link}}
+        GIT: https://github.com/{{repo.owner}}/{{repo.name}}/pull/{{build.pull}}
+        Message: {{build.message}}
+      {{else}}
+        [PR] {{repo.name}}/#{{build.number}} fail. {{build.author}} {{build.event}} to {{build.branch}}.
+        CI: {{build.link}}
+        GIT: https://github.com/{{repo.owner}}/{{repo.name}}/pull/{{build.pull}}
+        Message: {{build.message}}
+      {{/success}}
+    when:
+      local: false
+      event:
+        - pull_request
+        - tag
+      status:
+        - success
+        - failure

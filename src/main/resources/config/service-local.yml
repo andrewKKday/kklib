@@ -1,0 +1,21 @@
+spring.datasource: ## 如果  開啟 JPA 支援. 則一定要 設定 datasource
+  url: jdbc:postgresql://127.0.0.1:5432/postgres?sslmode=disable
+  username: kkuser
+  password: Passw0rd
+com.kkday.sdk:
+  redis:
+    enable: true ## 開關 REDIS 支援.
+    ip: 127.0.0.1
+    port: 6379
+    config:
+      enable: true ## 開關 REDIS 支援.
+      ip: 127.0.0.1
+      port: 6379
+  audit:
+    slack:
+      channel : null
+      srvUrl : null
+  jpa:
+    enable: true ## 開關 JPA 支援.
+  mq:
+    enable: true  ## 開關 MQ 支援.
