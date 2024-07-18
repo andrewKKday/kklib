@@ -13,7 +13,7 @@ import lombok.experimental.Accessors;
 @ToString(callSuper = true)
 @Accessors(chain = true)
 @Table(name = "library_book")
-public class libBook extends BaseEntity {
+public class  LibBook extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

@@ -19,7 +19,7 @@ import lombok.experimental.Accessors;
 // 使 setter 方法返回當前對象，支持鏈式調用
 @Table(name = "library_user")
 // 將此實體類映射到名為 "library_user" 的數據庫表
-public class libUser extends BaseEntity {
+public class LibUser extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
