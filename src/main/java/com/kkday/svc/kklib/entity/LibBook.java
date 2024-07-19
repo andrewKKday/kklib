@@ -13,7 +13,7 @@ import lombok.experimental.Accessors;
 @ToString(callSuper = true)
 @Accessors(chain = true)
 @Table(name = "library_book")
-public class  LibBook extends BaseEntity {
+public class LibBook extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -27,7 +27,7 @@ public class  LibBook extends BaseEntity {
 
     private String bookCurrency;
 
-    private String bookPrice;
+    private Integer bookPrice;
 
-    private String bookCost;
+    private Integer bookCost;
 }
