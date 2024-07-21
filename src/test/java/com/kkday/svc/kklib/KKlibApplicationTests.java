@@ -6,9 +6,9 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 
 @ActiveProfiles(profiles = "test")
-@SpringBootTest(classes = KklibApplication.class)
+@SpringBootTest(classes = KKlibApplication.class)
 @EnableKKdaySdkTest
-class KklibApplicationTests {
+class KKlibApplicationTests {
 
     @Test
     void contextLoads() {

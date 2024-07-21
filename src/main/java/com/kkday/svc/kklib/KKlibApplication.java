@@ -6,10 +6,10 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
 @EnableKKdaySdk
-public class KklibApplication {
+public class KKlibApplication {
 
     public static void main(String[] args) {
-        SpringApplication.run(KklibApplication.class, args);
+        SpringApplication.run(KKlibApplication.class, args);
     }
 
 }

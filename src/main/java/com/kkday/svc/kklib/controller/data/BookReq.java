@@ -7,7 +7,7 @@ import lombok.EqualsAndHashCode;
 
 @Data
 @EqualsAndHashCode(callSuper = true)
-public class LibBookReq extends RequestJson{
+public class BookReq extends RequestJson{
 
     @JsonIgnore
     private Integer bookOid;

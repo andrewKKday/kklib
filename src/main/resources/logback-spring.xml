@@ -16,6 +16,7 @@
 <!--			class="ch.qos.logback.core.encoder.LayoutWrappingEncoder">-->
 <!--			<layout class="com.kkday.sdk.impl.log.DebugJsonLayout" />-->
 <!--		</encoder>-->
+<!--		log格式更換-->
 		<encoder>
 			<pattern>
 				%date{yyyy-MM-dd HH:mm:ss, Asia/Taipei} %level [%thread] [%X{request-uuid}] %logger{10} [%file:%line] %msg%n

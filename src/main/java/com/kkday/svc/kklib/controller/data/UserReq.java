@@ -7,7 +7,7 @@ import lombok.EqualsAndHashCode;
 
 @Data
 @EqualsAndHashCode(callSuper = true)
-public class LibUserReq extends RequestJson {
+public class UserReq extends RequestJson {
 
     @JsonIgnore
     private Integer userOid;
