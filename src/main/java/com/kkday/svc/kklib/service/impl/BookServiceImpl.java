@@ -4,6 +4,7 @@ import com.kkday.sdk.mq.MQService;
 import com.kkday.sdk.svc.BaseDomainServiceImpl;
 import com.kkday.svc.kklib.entity.Book;
 import com.kkday.svc.kklib.mq.BookMQTopic;
+import com.kkday.svc.kklib.mq.data.BookMessage;
 import com.kkday.svc.kklib.repository.BookRepository;
 import com.kkday.svc.kklib.service.BookService;
 import lombok.extern.slf4j.Slf4j;
@@ -31,7 +32,8 @@ public class BookServiceImpl extends BaseDomainServiceImpl<Integer, Book> implem
     @Override
     public Book createBook(Book book){
         Book createdBook = libRepository.save(book);
-        sendMessage(createdBook);
+        BookMessage msg = new BookMessage(book.getBookOid(),book);
+        sendMessage(msg);
         return createdBook;
     }
 
@@ -46,7 +48,8 @@ public class BookServiceImpl extends BaseDomainServiceImpl<Integer, Book> implem
             throw new IllegalArgumentException("Book ID cannot be null");
         }
         Book updatedBook = libRepository.save(book);
-        sendMessage(updatedBook);
+        BookMessage msg = new BookMessage(book.getBookOid(),book);
+        sendMessage(msg);
         return updatedBook;
     }
 
@@ -57,7 +60,8 @@ public class BookServiceImpl extends BaseDomainServiceImpl<Integer, Book> implem
     @Override
     public void deleteById(Integer bookOid) {
         libRepository.deleteById(bookOid);
-        sendMessage(bookOid);
+        BookMessage msg = new BookMessage(bookOid,null);
+        sendMessage(msg);
     }
 
     /**
@@ -84,9 +88,9 @@ public class BookServiceImpl extends BaseDomainServiceImpl<Integer, Book> implem
         return null;
     }
 
-    private void sendMessage(Object data) {
+    private void sendMessage(BookMessage book) {
         try {
-            mqService.sendMessage(BookMQTopic.BOOK, data);
+            mqService.sendMessage(BookMQTopic.BOOK, book);
         } catch (Exception e) {
             log.error("Failed to send MQ message", e);
         }

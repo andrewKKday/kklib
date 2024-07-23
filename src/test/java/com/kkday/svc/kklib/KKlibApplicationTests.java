@@ -7,7 +7,7 @@ import org.springframework.test.context.ActiveProfiles;
 
 @ActiveProfiles(profiles = "test")
 @SpringBootTest(classes = KKlibApplication.class)
-@EnableKKdaySdkTest
+@EnableKKdaySdkTest //加這些annotation讓他變成測試環境
 class KKlibApplicationTests {
 
     @Test
