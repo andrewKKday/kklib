@@ -23,11 +23,11 @@ public class UserMQEventListener extends AbstractMQMessageListener<User> {
     protected void handleCb(String topic, User user) {
         log.info(user.toString());
         userService.save(user);
-        Thread.sleep(1 * 1000);
+        Thread.sleep(1000);
     }
 
     @Override
     protected MQTopic getMQTopic(){
-        return UserMQTopic.ALL;
+        return UserMQTopic.USER;
     }
 }

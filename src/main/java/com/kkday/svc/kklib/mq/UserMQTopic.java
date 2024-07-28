@@ -11,7 +11,6 @@ import lombok.RequiredArgsConstructor;
 @Getter
 @RequiredArgsConstructor
 public enum UserMQTopic implements MQTopic {
-    ALL("#"),
     USER("USER");
 
     private final String value;

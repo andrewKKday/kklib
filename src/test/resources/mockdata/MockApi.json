@@ -1,0 +1,14 @@
+{
+  "metadata": {
+    "status": "0000",
+    "desc": null
+  },
+  "data": {
+    "bookCategory": "lib",
+    "bookTitle": "coolWoman",
+    "bookAuthor": "nice",
+    "bookCurrency": "good",
+    "bookPrice": 690,
+    "bookCost": 80
+  }
+}

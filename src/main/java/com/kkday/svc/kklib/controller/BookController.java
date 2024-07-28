@@ -23,8 +23,8 @@ public class BookController {
 
     /**
      * 新增Book
-     * @param req
-     * @return
+     * @param req http request內容
+     * @return http response內容
      */
     @KKTxRequired
     @PostMapping("/createBook")
@@ -40,9 +40,8 @@ public class BookController {
 
     /**
      * 更新Book
-     * @param req
-     * @param bookOid
-     * @return
+     * @param req http request內容
+     * @return http response內容
      */
     @KKTxRequired
     @KKLock(lockName = "updateBookLock", tryLockTime = 5000L)
@@ -66,7 +65,6 @@ public class BookController {
 
     /**
      * 刪除Book
-     * @param bookOid
      */
     @KKTxRequired
     @KKLock(lockName = "deleteBookLock", tryLockTime = 5000L)
@@ -79,11 +77,9 @@ public class BookController {
 
     /**
      * 透過Oid找Book
-     * @param bookOid
-     * @return
      */
-    @GetMapping("/findBook/{bookOid}")
-    public BookResp findBook(@PathVariable Integer bookOid) {
+    @GetMapping("/findBookById/{bookOid}")
+    public BookResp findBookById(@PathVariable Integer bookOid) {
         Book book = bookService.findById(bookOid);
         BookResp resp = new BookResp();
         resp.setBook(book);
@@ -93,22 +89,43 @@ public class BookController {
 
     /**
      * 列出所有Books
-     * @return
      */
     @GetMapping("/listAllBook")
     public List<Book> listAllBook() {
         return bookService.findAll();
     }
 
-    /* @GetMapping("/findBook/{bookOid}")
-    public LibBook findBook(@RequestBody LibBook libBook, @PathVariable Integer bookOid) {
-        LibBook book = libBookService.findById(bookOid);
+    /**
+     * 透過Title找Book
+     */
+    @GetMapping("/findBookByTitle/{bookTitle}")
+    public BookResp findBookByTitle(@PathVariable String bookTitle) {
+        Book book = bookService.findByTitle(bookTitle);
+        BookResp resp = new BookResp();
+        resp.setBook(book);
         log.info("Find Book {}", book);
-        return libBookService.findById(libBook.getBookOid());
+        return resp;
     }
 
-    @PostMapping("/createBook")
-    public LibBook createBook(@RequestBody LibBook libBook) {
-        return libBookService.createBook(libBook);
-    }*/
+    /**
+     * 透過Title和Category找Book
+     */
+    @GetMapping("/findBookByTitleAndCategory/{bookTitle}/{bookCategory}")
+    public BookResp findBookByTitleAndCategory(@PathVariable String bookTitle, @PathVariable String bookCategory) {
+        Book book = bookService.findByTitleAndCategory(bookTitle, bookCategory);
+        BookResp resp = new BookResp();
+        resp.setBook(book);
+        log.info("Find Book {}", book);
+        return resp;
+    }
+
+    /**
+     *  批次執行. 收到請求後於背景執行，發布新書資訊
+     */
+    @GetMapping("/batchExecuteAsync")
+    public void batchExecuteAsync(){
+        List<Book> books = bookService.findAll();
+        log.info("list all books {}", books);
+        books.forEach(book -> bookService.executeJobAsync(book));
+    }
 }

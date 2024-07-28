@@ -6,6 +6,9 @@ import com.kkday.svc.kklib.entity.Book;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
+/**
+ * 繼承
+ */
 @Data
 @EqualsAndHashCode(callSuper = true)
 public class BookResp extends ResponseJson<Book> {

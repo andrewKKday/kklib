@@ -1,10 +1,18 @@
 package com.kkday.svc.kklib.api.data;
 
-import com.kkday.sdk.controller.RequestJson;
+import com.kkday.sdk.api.KKApiRetryConfig;
+import com.kkday.sdk.exception.OutboundApiException;
+import lombok.Builder;
 import lombok.Data;
-import lombok.EqualsAndHashCode;
 
-@EqualsAndHashCode(callSuper = true)
 @Data
-public class NewBookReq extends RequestJson {
+@Builder
+public class NewBookReq implements KKApiRetryConfig {
+    private String bookTitle;
+
+    @Override
+    public boolean shouldRetry(OutboundApiException e){
+        return true;
+    }
+
 }

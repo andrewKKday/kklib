@@ -1,35 +1,52 @@
 package com.kkday.svc.kklib.mq;
 
+import com.kkday.sdk.api.KKApiFactory;
 import com.kkday.sdk.mq.AbstractMQMessageListener;
 import com.kkday.sdk.mq.MQTopic;
+import com.kkday.svc.kklib.api.FakeApi;
+import com.kkday.svc.kklib.api.data.NewBookId;
+import com.kkday.svc.kklib.api.data.NewBookResp;
 import com.kkday.svc.kklib.entity.Book;
 import com.kkday.svc.kklib.service.BookService;
-import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-/**
- * 定義 MQ Listener 來接收特定 MQ 訊息
- */
 @Component
-// MQ Listener 一定要宣告為 Component.
-// 這樣才能在 Spring 啟動時一併啟動
 @Slf4j
-public class BookMQEventListener extends AbstractMQMessageListener<Book> {
+public class BookMQEventListener extends AbstractMQMessageListener<NewBookId> {
     @Autowired
     private BookService bookService;
 
     @Override
-    @SneakyThrows
-    protected void handleCb(String topic, Book book) {
-        log.info(book.toString());
-        bookService.save(book);
-        Thread.sleep(1 * 1000);
+    protected void handleCb(String topic, NewBookId id) {
+        FakeApi api = KKApiFactory.getApi(FakeApi.class);
+        NewBookResp newBookResp;
+        try {
+            newBookResp = api.getNewBook();
+            //Integer bookOid = newBookResp.getData().getBookOid();
+
+            // 檢查書的內容是否存在
+            if (bookService.existsByBookTitleAndBookAuthorAndBookCategory(
+                    newBookResp.getData().getBookTitle(),
+                    newBookResp.getData().getBookAuthor(),
+                    newBookResp.getData().getBookCategory())) {
+                log.info("Book with similar content already exists. Skipping creation.");
+                return;
+            }
+
+            Book book = new Book();
+            BeanUtils.copyProperties(newBookResp.getData(), book);
+            Book newBook = bookService.createBook(book);
+            log.info("New fakeApi book created: {}", newBook);
+        } catch (Exception e) {
+            log.error(e.getMessage(), e);
+        }
     }
 
     @Override
-    protected MQTopic getMQTopic(){
-        return BookMQTopic.ALL;
+    protected MQTopic getMQTopic() {
+        return BookMQTopic.BOOK;
     }
 }
