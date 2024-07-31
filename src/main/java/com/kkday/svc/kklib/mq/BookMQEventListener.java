@@ -3,7 +3,7 @@ package com.kkday.svc.kklib.mq;
 import com.kkday.sdk.api.KKApiFactory;
 import com.kkday.sdk.mq.AbstractMQMessageListener;
 import com.kkday.sdk.mq.MQTopic;
-import com.kkday.svc.kklib.api.FakeApi;
+import com.kkday.svc.kklib.api.BookFakeApi;
 import com.kkday.svc.kklib.api.data.NewBookId;
 import com.kkday.svc.kklib.api.data.NewBookResp;
 import com.kkday.svc.kklib.entity.Book;
@@ -21,7 +21,7 @@ public class BookMQEventListener extends AbstractMQMessageListener<NewBookId> {
 
     @Override
     protected void handleCb(String topic, NewBookId id) {
-        FakeApi api = KKApiFactory.getApi(FakeApi.class);
+        BookFakeApi api = KKApiFactory.getApi(BookFakeApi.class);
         NewBookResp newBookResp;
         try {
             newBookResp = api.getNewBook();

@@ -1,7 +1,7 @@
 package com.kkday.svc.kklib.api.impl;
 
 import com.kkday.sdk.api.BaseApiImpl;
-import com.kkday.svc.kklib.api.FakeApi;
+import com.kkday.svc.kklib.api.BookFakeApi;
 import com.kkday.svc.kklib.api.data.NewBookResp;
 import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Component;
@@ -11,7 +11,7 @@ import org.springframework.stereotype.Component;
  */
 @Component
 @Primary
-public class FakeApiImpl extends BaseApiImpl implements FakeApi {
+public class BookFakeApiImpl extends BaseApiImpl implements BookFakeApi {
     @Override
     protected String getRootUrl() {
         return "http://fakeapi.sit.kkday.com/";
@@ -19,6 +19,6 @@ public class FakeApiImpl extends BaseApiImpl implements FakeApi {
 
     @Override
     public NewBookResp getNewBook() throws Exception {
-        return doGet("api/getBook", null, NewBookResp.class);
+        return doGet("/api/getBook", null, NewBookResp.class);
     }
 }

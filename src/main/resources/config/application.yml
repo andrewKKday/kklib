@@ -17,6 +17,7 @@ spring:
       maximum-pool-size: 10 # the maximum number of connections that HikariCP will keep in the pool
       minimumIdle: 10 #  minimum number of idle connections that HikariCP tries to maintain in the pool
   jpa:
+    show-sql: true
     open-in-view: false
     properties:
       hibernate:
@@ -42,12 +43,12 @@ management:
       enabled: true
     health:
       enabled: true
-  metrics:
-    export:
-      prometheus:
-        enabled: true
   server:
     port: 8090
+  prometheus:
+    metrics:
+      export:
+        enabled: true
 com.kkday.sdk:
   devMode: false
   serverEnv: dev
@@ -64,9 +65,9 @@ com.kkday.sdk:
       producer: amqp://guest:guest@localhost:5672/%2f
       consumer: amqp://guest:guest@localhost:5672/%2f
     prefix:
-      exchange: ex-
+      exchange: exchange-
     queue:
-      consumer: q-kklib
+      consumer: queue-kklib
   jpa:
     enable: true ## 開關 JPA 支援.
   redis:

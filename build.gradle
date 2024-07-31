@@ -17,5 +17,5 @@ apply from: resources.text.fromInsecureUri("http://nexus.sit.kkday.com/nexus/ser
 version = '0.0.1-SNAPSHOT'
 
 dependencies {
-
+    implementation group: 'org.apache.velocity', name: 'velocity-engine-core', version: '2.3'
 }

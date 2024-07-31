@@ -2,10 +2,15 @@ package com.kkday.svc.kklib.controller;
 
 import com.kkday.sdk.annotation.KKLock;
 import com.kkday.sdk.annotation.KKTxRequired;
+import com.kkday.svc.kklib.KKlibResultCode;
 import com.kkday.svc.kklib.controller.data.BookReq;
 import com.kkday.svc.kklib.controller.data.BookResp;
 import com.kkday.svc.kklib.entity.Book;
+import com.kkday.svc.kklib.facade.MailFacade;
 import com.kkday.svc.kklib.service.BookService;
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.DecimalMin;
+import jakarta.validation.constraints.NotNull;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +25,9 @@ public class BookController {
 
     @Autowired
     private BookService bookService;
+
+    @Autowired
+    private MailFacade mailFacade;
 
     /**
      * 新增Book
@@ -44,8 +52,8 @@ public class BookController {
      * @return http response內容
      */
     @KKTxRequired
-    @KKLock(lockName = "updateBookLock", tryLockTime = 5000L)
-    @PutMapping("/updateBook/{bookOid}")
+    @KKLock(moduleName = "'updateBook'", lockName = "#bookOid", tryLockTime = 5000L)
+    @PostMapping("/updateBook/{bookOid}")
     public BookResp updateBook(@RequestBody BookReq req, @PathVariable Integer bookOid) {
         Book book = bookService.findById(bookOid);
         log.info("Update Book {}", book);
@@ -63,27 +71,32 @@ public class BookController {
         return resp;
     }
 
+
     /**
      * 刪除Book
      */
     @KKTxRequired
-    @KKLock(lockName = "deleteBookLock", tryLockTime = 5000L)
-    @DeleteMapping("/deleteBook/{bookOid}")
+    @KKLock(moduleName = "'deleteBook'", lockName = "#bookOid", tryLockTime = 5000L)
+    @PostMapping("/deleteBook/{bookOid}")
     public void deleteBook(@PathVariable Integer bookOid) {
         Book book = bookService.findById(bookOid);
         log.info("Delete Book {}", book);
         bookService.deleteById(bookOid);
     }
 
+
     /**
      * 透過Oid找Book
      */
     @GetMapping("/findBookById/{bookOid}")
     public BookResp findBookById(@PathVariable Integer bookOid) {
+        Book bookTest =new Book();
+        Integer i = bookTest.getBookOid();
+        i.toString();
         Book book = bookService.findById(bookOid);
         BookResp resp = new BookResp();
         resp.setBook(book);
-        log.info("Find Book {}", book);
+        log.info("Find Book By ID{}", book);
         return resp;
     }
 
@@ -103,7 +116,7 @@ public class BookController {
         Book book = bookService.findByTitle(bookTitle);
         BookResp resp = new BookResp();
         resp.setBook(book);
-        log.info("Find Book {}", book);
+        log.info("Find Book By Title {}", book);
         return resp;
     }
 
@@ -115,7 +128,7 @@ public class BookController {
         Book book = bookService.findByTitleAndCategory(bookTitle, bookCategory);
         BookResp resp = new BookResp();
         resp.setBook(book);
-        log.info("Find Book {}", book);
+        log.info("Find Book Title And Category{}", book);
         return resp;
     }
 
@@ -128,4 +141,21 @@ public class BookController {
         log.info("list all books {}", books);
         books.forEach(book -> bookService.executeJobAsync(book));
     }
+
+    /**
+     * Slack 錯誤通知測試
+     */
+    @GetMapping("/errorNoticeToSlack")
+    public void errorNoticeToSlack() {
+        throw KKlibResultCode.BOOK_ERROR.toSvcException();
+    }
+
+    /**
+     *  取得外部mail template
+     */
+    @GetMapping("/mail/{id}")
+    public void getMailTemplate(@PathVariable @Valid @NotNull @DecimalMin("1") Integer id){
+        mailFacade.generateMail("test.html","Andrew Chen",id);
+    }
+
 }

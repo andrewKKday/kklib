@@ -13,8 +13,8 @@ com.kkday.sdk:
       port: 6379
   audit:
     slack:
-      channel : null
-      srvUrl : null
+      channel : U07C1M5BEV6
+      srvUrl : https://hooks.slack.com/services/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
   jpa:
     enable: true ## 開關 JPA 支援.
   mq:
