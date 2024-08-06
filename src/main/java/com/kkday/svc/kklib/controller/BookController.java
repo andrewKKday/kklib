@@ -2,7 +2,10 @@ package com.kkday.svc.kklib.controller;
 
 import com.kkday.sdk.annotation.KKLock;
 import com.kkday.sdk.annotation.KKTxRequired;
+import com.kkday.sdk.api.KKApiFactory;
 import com.kkday.svc.kklib.KKlibResultCode;
+import com.kkday.svc.kklib.api.AsyncApi;
+import com.kkday.svc.kklib.api.data.NewBookResp;
 import com.kkday.svc.kklib.controller.data.BookReq;
 import com.kkday.svc.kklib.controller.data.BookResp;
 import com.kkday.svc.kklib.entity.Book;
@@ -17,6 +20,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.concurrent.CompletableFuture;
 
 @Slf4j
 @RestController
@@ -59,10 +63,8 @@ public class BookController {
         log.info("Update Book {}", book);
         // 保存原始識別符
         Integer originalId = book.getBookOid();
-
         // 拷貝屬性，確保不改變識別符
         BeanUtils.copyProperties(req, book);
-
         // 恢復原始識別符
         book.setBookOid(originalId);
         Book updatedBook = bookService.updateBook(book);
@@ -133,7 +135,7 @@ public class BookController {
     }
 
     /**
-     *  批次執行. 收到請求後於背景執行，發布新書資訊
+     *  批次執行. 收到請求後於背景執行
      */
     @GetMapping("/batchExecuteAsync")
     public void batchExecuteAsync(){
@@ -143,7 +145,7 @@ public class BookController {
     }
 
     /**
-     * Slack 錯誤通知測試
+     *  Slack 錯誤通知測試
      */
     @GetMapping("/errorNoticeToSlack")
     public void errorNoticeToSlack() {
@@ -151,11 +153,24 @@ public class BookController {
     }
 
     /**
-     *  取得外部mail template
+     *  取得外部 mail template
      */
     @GetMapping("/mail/{id}")
     public void getMailTemplate(@PathVariable @Valid @NotNull @DecimalMin("1") Integer id){
         mailFacade.generateMail("test.html","Andrew Chen",id);
     }
 
+    /**
+     *  從外部API獲取新書的資訊(書名)，然後將書的信息返回給調用者
+     */
+    @PostMapping("/testAsyncApi/{bookTitle}")
+    public Book testAsyncApi(@PathVariable String bookTitle) throws Exception {
+        CompletableFuture<NewBookResp> future = KKApiFactory.getApi( AsyncApi.class).getNewBookAsync(bookTitle);
+
+        future.whenComplete((resp, ex) -> log.info("resp={}" ,resp + ", ex={}" ,ex));
+        //設置了一個回調函數，在非同步操作完成時記錄下結果（resp）和異常（ex）。
+        NewBookResp resp = future.get();
+        // 使用get()方法阻塞當前線程，直到非同步操作完成，並獲取結果。
+        return resp.getData();
+    }
 }

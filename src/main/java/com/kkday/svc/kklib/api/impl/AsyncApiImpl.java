@@ -21,6 +21,6 @@ public class AsyncApiImpl extends BaseAsyncApiImpl implements AsyncApi {
     @Override
     @SneakyThrows
     public CompletableFuture<NewBookResp> getNewBookAsync(String title) {
-        return doPost("api/asyncBook", null, NewBookResp.class);
+        return doPost("/api/asyncBook", null, NewBookResp.class);
     }
 }
