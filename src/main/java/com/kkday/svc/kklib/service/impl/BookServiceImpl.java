@@ -92,11 +92,6 @@ public class BookServiceImpl extends BaseDomainServiceImpl<Integer, Book> implem
     }
 
     @Override
-    public Book findByTitleAndCategory(String title, String category) {
-        return libRepository.findBookByBookCategoryAndBookTitle(title,category);
-    }
-
-    @Override
     public boolean existsByBookTitleAndBookAuthorAndBookCategory(String bookTitle, String bookAuthor, String bookCategory) {
         return libRepository.existsByBookTitleAndBookAuthorAndBookCategory(bookTitle, bookAuthor, bookCategory);
     }

@@ -1,10 +1,7 @@
 package com.kkday.svc.kklib.service.impl;
 
 import com.kkday.sdk.svc.BaseDomainServiceImpl;
-import com.kkday.sdk.mq.MQService;
 import com.kkday.svc.kklib.entity.User;
-import com.kkday.svc.kklib.mq.data.UserMessage;
-import com.kkday.svc.kklib.mq.UserMQTopic;
 import com.kkday.svc.kklib.repository.UserRepository;
 import com.kkday.svc.kklib.service.UserService;
 import lombok.extern.slf4j.Slf4j;
@@ -21,18 +18,12 @@ public class UserServiceImpl extends BaseDomainServiceImpl<Integer, User> implem
     @Autowired
     private UserRepository libRepository;
 
-    @Autowired
-    private MQService mqService;
-
     /**
      * 新增User帳號
      */
     @Override
     public User createUser(User user) {
-        User createdUser = libRepository.save(user);
-        UserMessage msg = new UserMessage(user.getUserOid(),createdUser);
-        sendMessage(msg);
-        return createdUser;
+        return libRepository.save(user);
     }
 
     /**
@@ -43,10 +34,7 @@ public class UserServiceImpl extends BaseDomainServiceImpl<Integer, User> implem
         if (user.getUserOid() == null) {
             throw new IllegalArgumentException("User ID cannot be null");
         }
-        User updatedUser = libRepository.save(user);
-        UserMessage msg = new UserMessage(user.getUserOid(),updatedUser);
-        sendMessage(msg);
-        return updatedUser;
+        return libRepository.save(user);
     }
 
     /**
@@ -55,8 +43,6 @@ public class UserServiceImpl extends BaseDomainServiceImpl<Integer, User> implem
     @Override
     public void deleteUser(Integer userOid) {
         libRepository.deleteById(userOid);
-        UserMessage msg = new UserMessage(userOid,null);
-        sendMessage(msg);
     }
 
     /**
@@ -78,11 +64,4 @@ public class UserServiceImpl extends BaseDomainServiceImpl<Integer, User> implem
         return null;
     }
 
-    private void sendMessage(UserMessage userMsg) {
-        try {
-            mqService.sendMessage(UserMQTopic.USER, userMsg);
-        } catch (Exception e) {
-            log.error("Failed to send MQ message", e);
-        }
-    }
 }

@@ -14,7 +14,7 @@ public class MailFakeApiImpl extends BaseApiImpl implements MailFakeApi {
 
     @Override
     public MailResp getMail() throws Exception{
-        return doGet("/api/mail/template5", null, MailResp.class);
+        return doGet("/api/mail/template1", null, MailResp.class);
     }
 
 }

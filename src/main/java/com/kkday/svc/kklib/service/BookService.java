@@ -33,8 +33,6 @@ public interface BookService extends BaseDomainService<Integer, Book> {
 
     Book findByTitle(String title);
 
-    Book findByTitleAndCategory(String title, String category);
-
     boolean existsByBookTitleAndBookAuthorAndBookCategory(String bookTitle, String bookAuthor, String bookCategory);
 
     void executeJobAsync(Book book);

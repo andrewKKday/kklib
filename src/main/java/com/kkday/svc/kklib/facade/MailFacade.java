@@ -30,7 +30,7 @@ public class MailFacade {
             VelocityEngine velocityEngine = new VelocityEngine();
 
             VelocityContext context = new VelocityContext();
-            context.put("book", bookService.findById(bookOid));
+            context.put("bookTitle", bookService.findById(bookOid).getBookTitle());
             context.put("userName", userName);
 
             StringWriter writer = new StringWriter();
